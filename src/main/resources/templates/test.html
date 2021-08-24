@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <meta charset="UTF-8">
+    <title>dodoooooooooo</title>
+</head>
+<body>
+<h1>dodoooooooooo</h1>
+
+
+<p class="title" id="title"></p>
+<p class="titleGEO" id = "titleGEO"></p>
+<img src="" id="img" class="img">
+
+<button id="button" class="button">press</button>
+
+</body>
+</html>
+
+
+<script>
+    console.log(window.location.search.substring(1))
+    $.ajax({
+        url: "http://localhost:6969/api/justtest",
+        type: 'GET',
+        success: function(res) {
+            console.log(res)
+
+            $('#title').text(res.title);
+            $('#titleGEO').text(res.titleGEO);
+            document.getElementById("img").src = "images" + res.image;
+            console.log(document.getElementById("img").src = "http://localhost:6969/images" + res.image)
+        }
+    });
+
+
+    $("button").click(function(){
+
+            console.log("Fffasfasfsafsa")
+        window.location.replace("http://stackoverflow.com");
+
+
+    });
+</script>
