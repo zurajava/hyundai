@@ -15,17 +15,24 @@ import com.web.hyundai.service.ImageService;
 import com.web.hyundai.service.car.CarBuildService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiParam;
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @RestController
 @Api(tags = "Home Slider")
@@ -202,5 +209,19 @@ public class HomeController {
     return ResponseEntity.ok(carBuildService.jsonFilter(JSON_FILTER_NAME, slider));
   }
 
+  @PostMapping("/admin/home/delete-slider/{sliderId}")
+  public ResponseEntity<String> comfortDelete(@PathVariable Long sliderId) {
+    Optional<Home> slider = homeRepo.findById(sliderId);
+    if (slider.isPresent()) {
+
+      File oldFile = new File(Path.folderPath() + slider.get().getImage());
+      if (oldFile.exists()) {
+        oldFile.delete();
+      }
+      homeRepo.delete(slider.get());
+      return ResponseEntity.ok().body("deleted");
+    }
+    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("not found");
+  }
 
 }
